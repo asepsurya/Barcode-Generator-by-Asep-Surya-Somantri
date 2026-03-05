@@ -17,16 +17,30 @@ function urlShortenerPlugin(): Plugin {
         }
 
         try {
-          // Use TinyURL API directly via Node.js fetch (available in Node 18+)
-          const apiUrl = `https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`;
-          const response = await fetch(apiUrl);
-          const shortUrl = await response.text();
+          // Use Custom API directly via Node.js fetch (available in Node 18+)
+          const response = await fetch("https://short.scrollwebid.com/api/v1/links", {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer 1|2X0cGxZ5xOhh4nPaCY3ipCNXHKnZ9SU0F8naTME25a8eaa08',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              original_url: longUrl,
+              custom_slug: "",
+              password: "",
+              expires_at: ""
+            })
+          });
 
-          if (shortUrl && shortUrl.startsWith('http')) {
+          const data: any = await response.json();
+
+          if (data && data.success && data.data && data.data.short_code) {
+            const shortUrl = `https://short.scrollwebid.com/${data.data.short_code}`;
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ longUrl, shortUrl }));
           } else {
-            throw new Error('Invalid response from TinyURL');
+            console.error('API Error Response:', data);
+            throw new Error(data.message || 'Invalid response from URL Shortener API');
           }
         } catch (err: any) {
           console.error('Shorten error:', err);

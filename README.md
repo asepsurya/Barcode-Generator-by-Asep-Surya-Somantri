@@ -12,7 +12,7 @@ A modern, highly customizable Barcode & QR Code Generator built with React, Vite
 ## ✨ Features
 
 - **High-Definition (HD) Download**: Generate and download 8x scale (up to 2400px resolution) QR codes without losing pixel quality.
-- **Built-in URL Shortener**: Automatically shorten long, dense URLs into clean, easy-to-scan QR codes using a custom local TinyURL API integration (bypasses browser CORS).
+- **Built-in URL Shortener**: Automatically shorten long, dense URLs into clean, easy-to-scan QR codes using a custom API integration (bypasses browser CORS).
 - **Pro Design Controls**: 
   - **Outer Padding (Quiet Zone)**: Easily adjust the white margin surrounding the QR code (0px to 50px).
   - **Logo Safe Zone**: Change the scale of the embedded logo and dynamically carve out background dots so the logo is not obstructed.
@@ -58,9 +58,9 @@ Before you begin, ensure you have **Node.js** installed (v18 or higher is recomm
 
 1. **Masukkan URL / Teks**
    Buka aplikasi dan ketikkan alamat website (misal: `https://www.scrollwebid.com/`) ke dalam kolom teks **Target Content**.
-
+  
 2. **Gunakan URL Shortener (Opsional tapi Direkomendasikan)**
-   Jika URL Anda terlalu panjang, klik tombol **"Shorten"**. Aplikasi akan langsung memperpendek link (via TinyURL server-side proxy) sehingga QR code yang dihasilkan menjadi *less dense* (tidak terlalu padat) dan jauh lebih mudah di-scan oleh kamera HP.
+   Jika URL Anda terlalu panjang, klik tombol **"Shorten"**. Aplikasi akan langsung memperpendek link (via custom server-side proxy) sehingga QR code yang dihasilkan menjadi *less dense* (tidak terlalu padat) dan jauh lebih mudah di-scan oleh kamera HP.
 
 3. **Pilih Desain (Body & Corner)**
    - Klik salah satu dari 6 ikon **Body Pattern Shape** untuk mengubah gaya titik QR.
