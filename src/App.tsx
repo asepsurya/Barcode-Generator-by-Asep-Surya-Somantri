@@ -208,13 +208,10 @@ export default function App() {
       {/* Main Content */}
       <main className="container-fluid">
         <div className="main-wrapper">
-          <section className="header-section">
-            <h1>Create Your Professional QR</h1>
-            <p>Customize every detail of your QR code to match your branding perfectly.</p>
-          </section>
+
 
           <section className="section-box">
-            <h3>QR Customization Studio</h3>
+            <h1 className="h1-title">QR Customization Studio</h1>
 
             <div className="customizer-layout">
               <div className="config-panel">
