@@ -93,14 +93,33 @@ export default function App() {
     if (!isUrl) return;
     setIsShortening(true);
     try {
-      const response = await fetch(`/api/shorten?url=${encodeURIComponent(data.trim())}`);
-      if (!response.ok) throw new Error('Shortening failed');
+      const response = await fetch("https://short.scrollwebid.com/api/v1/links", {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer 1|2X0cGxZ5xOhh4nPaCY3ipCNXHKnZ9SU0F8naTME25a8eaa08',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          original_url: data.trim(),
+          custom_slug: "",
+          password: "",
+          expires_at: ""
+        })
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.message || 'Shortening failed');
+      }
+
       const result = await response.json();
-      if (result.shortUrl) {
-        setData(result.shortUrl);
-        updateOption('data', result.shortUrl);
-      } else if (result.error) {
-        throw new Error(result.error);
+
+      if (result.success && result.data && result.data.short_code) {
+        const shortUrl = `https://short.scrollwebid.com/${result.data.short_code}`;
+        setData(shortUrl);
+        updateOption('data', shortUrl);
+      } else {
+        throw new Error(result.message || 'Invalid response from URL Shortener API');
       }
     } catch (error: any) {
       console.error('Failed to shorten URL:', error);
@@ -224,8 +243,13 @@ export default function App() {
                       className="input-field"
                       value={data}
                       onChange={(e) => {
-                        setData(e.target.value);
-                        updateOption('data', e.target.value);
+                        let val = e.target.value;
+                        // Auto upgrade http to https
+                        if (val.toLowerCase().startsWith('http://')) {
+                          val = 'https://' + val.substring(7);
+                        }
+                        setData(val);
+                        updateOption('data', val);
                       }}
                       placeholder="https://example.com"
                     />
