@@ -148,8 +148,8 @@ export default function App() {
   const handleDownload = async (ext: 'png' | 'svg') => {
     // Scale factor for HD (e.g., 300px -> 2400px is exactly 8x scale)
     const scale = 8;
-    const currentOptions = { ...options };
 
+    // Create a NEW Options object specifically for HD export
     const hdOptions: Options = {
       ...options,
       width: (options.width || 300) * scale,
@@ -165,13 +165,12 @@ export default function App() {
       };
     }
 
-    // Update existing instance for identical rendering and wait a tiny bit for render
-    qrCode.current.update(hdOptions);
-    await new Promise(r => setTimeout(r, 100)); // 100ms render tick
-    await qrCode.current.download({ extension: ext, name: `qr-code-hd` });
+    // Use a separate, temporary instance for download to avoid affecting the preview instance
+    const exportCode = new QRCodeStyling(hdOptions);
 
-    // Restore size
-    qrCode.current.update(currentOptions);
+    // We add a tiny delay to ensure the new instance's internal rendering is ready
+    await new Promise(r => setTimeout(r, 100));
+    await exportCode.download({ extension: ext, name: `qr-code-hd` });
   };
 
   const updateOption = (path: string, value: any) => {
